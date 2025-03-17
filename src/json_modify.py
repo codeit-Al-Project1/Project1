@@ -7,8 +7,7 @@ img = {
     "id": 0,
     "drug_id": [],
     "width": 0,
-    "height": 0,
-    "camera_la": 0
+    "height": 0
 }
 
 annot = {
@@ -59,20 +58,19 @@ def json_modify(output_dir, json_folder, img=img, annot=annot):
 
     # json 파일 전처리
     for i in range(len(images)):
-        temp_img = img
+        temp_img = img.copy()
 
         temp_img["file_name"] = images[i]["file_name"]
         temp_img["id"] = images[i]["id"]
         temp_img["width"] = images[i]["width"]
         temp_img["height"] = images[i]["height"]
-        temp_img["camera_la"] = images[i]["camera_la"]
 
         # annotaion을 image_id 추적 후 저장
         temp_annotations = []
         drug_ids = set()
         for j in range(len(annotations)):
             if annotations[j]["image_id"] ==  temp_img["id"] and annotations[j]["category_id"] not in drug_ids:
-                temp_annot = annot
+                temp_annot = annot.copy()
                 temp_annot["area"] = annotations[j]["area"]
                 temp_annot["bbox"] = annotations[j]["bbox"]
                 temp_annot["category_id"] = annotations[j]["category_id"]
