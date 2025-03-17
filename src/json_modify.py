@@ -43,7 +43,7 @@ def json_modify(output_dir, json_folder, img=img, annot=annot):
                 json_file_path = os.path.join(root, file)
 
                 # JSON 파일 로드
-                with open(json_file_path, 'r') as f:
+                with open(json_file_path, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     json_list.append(data)
 

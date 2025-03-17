@@ -1,2 +1,4 @@
 __pycache__
-data/train_annot_modify
+
+data/train_annots_modify/
+
