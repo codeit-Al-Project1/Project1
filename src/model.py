@@ -1,16 +1,11 @@
 import torchvision
-import torch.nn as nn
+from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
-"""
-Fast R-CNN 모델 정의
-"""
-
-def get_fast_rcnn_model(num_classes=2):
-    # Faster R-CNN을 불러와 Fast R-CNN으로 변형
+def get_fast_rcnn_model(num_classes):
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
-    
-    # RoI 헤드 부분만 수정 (num_classes 설정)
+
+    # 기존 분류 헤드 수정
     in_features = model.roi_heads.box_predictor.cls_score.in_features
-    model.roi_heads.box_predictor = torchvision.models.detection.faster_rcnn.FastRCNNPredictor(in_features, num_classes)
-    
+    model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+
     return model
