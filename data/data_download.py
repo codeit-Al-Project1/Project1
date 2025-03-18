@@ -7,7 +7,7 @@ from tqdm import tqdm
 import json
 import requests
 
-def download_data(download_path = './data',download=True, extract=True):
+def download_data(download_path = './data', download=True, extract=True):
     """
     Kaggle API를 이용해 데이터를 다운로드하고, 압축을 해제하는 메소드, 
     메소드의 마지막 과정에서 압축파일을 제거한다.
@@ -20,11 +20,14 @@ def download_data(download_path = './data',download=True, extract=True):
     :param download: bool: 데이터 다운로드 여부
     :param extract: bool: 압축 해제 여부
     """
-    if os.path.exists('./data'):
-        path = './data'
+    if os.path.exists(download_path):
+        download_path = './data'
         print("data폴더가 존재합니다.")
+    elif download_path != './data' and not os.path.exists(download_path):
+        os.mkdir(download_path)
+        print("지정한 위치에 새로운 폴더를 생성합니다.")
     else:
-        path = './'
+        download_path = './'
         print("data폴더가 없습니다. 폴더를 새로 만들지 않고 현재폴더에서 진행됩니다.")
 
     competition_name = 'ai01-level1-project'
@@ -37,24 +40,17 @@ def download_data(download_path = './data',download=True, extract=True):
             print(f"{competition_name}가 {download_path}에 이미 존재합니다.")
         else:
             print(f"{competition_name} 다운로드 시작...")
-            zip_url = f"https://www.kaggle.com/competitions/{competition_name}/download-all"
+            try:
+                api.competition_download_files(competition_name, path=download_path, quiet=False)
+                print(f"다운로드 완료! 저장위치: {download_path}")
+            except Exception as e:
+                print(f"Error: {e}")
+                return           
             
-            # requests를 사용하여 파일을 다운로드하고 tqdm으로 진행 상태 표시
-            response = requests.get(zip_url, stream=True)
-            total_size = int(response.headers.get('content-length', 0))
-            
-            with open(os.path.join(path, f"{competition_name}.zip"), 'wb') as f:
-                with tqdm(total=total_size, unit='B', unit_scale=True, desc="Downloading") as bar:
-                    for data in response.iter_content(chunk_size=1024):
-                        f.write(data)
-                        bar.update(len(data))
-            
-            print(f"다운로드 완료! 저장위치: {download_path}")
-
     if extract:
         zip_file = f'{competition_name}.zip'
         if zip_file not in os.listdir(download_path):
-            print(f"{zip_file} not found in {download_path}")
+            print(f"{zip_file}를 {download_path}에서 찾을 수 없습니다.")
             return
         
         zip_path = os.path.join(download_path, zip_file)
@@ -74,7 +70,7 @@ def wrap_annotation(path = './data'):
     기존 train_annotations 폴더를 대체 하는 과정.
     """
 
-    if os.path.exists('./data'):
+    if os.path.exists(path):
         path = './data'
     else:
         path = './'
@@ -87,7 +83,7 @@ def wrap_annotation(path = './data'):
     url = f'https://drive.google.com/uc?export=download&id={file_id}'
 
     print("Train_annotations를 덮어씌웁니다.")
-    gdown.download(url, f'{zip_name}.zip', quiet=False)
+    gdown.download(url, os.path.join(path, f'{zip_name}.zip'), quiet=False)
 
     if os.path.exists(os.path.join(path, zip_name)):
         shutil.rmtree(os.path.join(path, zip_name))
@@ -132,10 +128,7 @@ def folder_check():
     
 
 if __name__ == '__main__':
-    download_data(download=False, extract=False)
+    download_data(download=True, extract=True)
     folder_check()
     wrap_annotation()
     folder_check()
-    
-    
-    
