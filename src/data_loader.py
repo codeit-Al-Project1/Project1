@@ -7,10 +7,33 @@ from torchvision import transforms
 
 import torch
 from torch.utils.data import DataLoader, random_split
-from src.transforms import get_transforms
 import argparse 
 import sys
 
+
+# 데이터 증강을 위한 transform 정의
+def get_transforms(mode='train'):
+    """
+    
+    """
+    if mode == 'train':
+        return transforms.Compose([
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomVerticalFlip(),
+            transforms.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1, hue=0.1),
+            transforms.ToTensor(),
+            transforms.ConvertImageDtype(dtype=torch.float)
+        ])
+    elif mode == "test":
+        return transforms.Compose([
+            transforms.ToTensor(),
+            transforms.ConvertImageDtype(dtype=torch.float)
+        ])
+    else:
+        raise ValueError(f"Invalid mode: {mode}. Choose either 'train' or 'test'.")
+
+
+    
 
 
 class TestDataset(Dataset):
