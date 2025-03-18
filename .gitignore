@@ -7,8 +7,8 @@ data/train_annots_modify/*
 
 이미지 디랙토리, push/ pull 방지 -- 업데이트를 희망한다면 .gitignore에서 제외 시키는 것을 고려
 data/test_images/*
-data/train_images/*
-data/train_annotations/*
+# data/train_images/*
+# data/train_annotations/*
 
 # 혹시나 압축 파일이 제거되지 않았다면 pull / push에서 제외
 data/ai01-level1-project.zip
