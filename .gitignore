@@ -10,3 +10,4 @@ data/test_images/*
 data/train_images/*
 data/train_annotations/*
 data/train_annots_modify/*
+data/ai01-level1-project.zip  # 이미지 파일이 많아서 압축파일로 업로드하는 경우
