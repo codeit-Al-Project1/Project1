@@ -1,0 +1,12 @@
+__pycache__
+
+
+# 모듈화 실행시 해당 디랙토리 파일들을 덮어쓰기 떄문에 개개인의 모듈 실행확인을 위해
+# 해당 Directory 제외
+data/train_annots_modify/
+
+# 이미지 디랙토리, push/ pull 방지 -- 업데이트를 희망한다면 제외 시키는 것을 고려
+data/test_images/*
+data/train_images/*
+data/train_annotations/*
+data/train_annots_modify/*

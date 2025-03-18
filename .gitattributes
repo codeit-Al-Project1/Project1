@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 data/train_images/* filter=lfs diff=lfs merge=lfs
 data/tran_annotations/* filter=lfs diff=lfs merge=lfs
 data/test_images/* filter=lfs diff=lfs merge=lfs
+=======
+data/train_images/* filter=lfs diff=lfs merge=lfs -image
+data/tran_annotations/* filter=lfs diff=lfs merge=lfs -image
+data/test_images/* filter=lfs diff=lfs merge=lfs -image
+>>>>>>> bd0ce999ac3c7a01ab7500229cee1df7ecbcfe06
